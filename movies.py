@@ -136,35 +136,39 @@ def main():
     and view movies along with their ratings and release years. Users can also view statistics about the movies,
     get a random movie recommendation, and search for movies by title."""
     action_list = {
-        "Exit" : exit_program,
-        "List movies" : show_all_movies_and_ratings,
-        "Add movie" : add_movie,
-        "Delete movie" : delete_movie,
-        "Update movie" : update_movie,
-        "Stats" : show_stats,
-        "Random movie" : random_movie,
-        "Search movie" : search_movie,
-        "Movies sorted by rating" : show_sorted_movies,
-        "Generate website" : generate_website,
+        0 : ("Exit" ,exit_program),
+        1 : ("List movies" ,show_all_movies_and_ratings),
+        2 : ("Add movie" ,add_movie),
+        3 : ("Delete movie" ,delete_movie),
+        4 : ("Stats" ,show_stats),
+        5 : ("Random movie" ,random_movie),
+        6 : ("Search movie" ,search_movie),
+        7 : ("Movies sorted by rating" ,show_sorted_movies),
+        8 : ("Generate website" ,generate_website),
     }
 
 
     while True:
         print("******** My Movies Database **********\n")
         print("Menu:")
+        print("Please choose an action by selecting a number (0-8):")
 
-        for menu_number, action in action_list.items():
-            print(menu_number)
+        for menu_key, action in action_list.items():
+            print(f"{menu_key} : {action[0]}")
 
-        user_input = input(
-            "What do you wanna do? "
-        )
+
 
         try:
-            action_list[user_input]()
+            user_input = int(input(
+                "What do you wanna do? "
+            ))
+            action_list[user_input][1]()
 
         except KeyError:
             print("Unknown action. Please enter a valid action.")
+
+        except ValueError:
+            print("Please enter a number (0-8).")
 
 
 
