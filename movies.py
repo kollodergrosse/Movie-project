@@ -1,3 +1,4 @@
+import math
 import random
 import statistics
 import sys
@@ -92,29 +93,39 @@ def show_stats():
     movies = storage.list_movies()
 
     ratings = []
+    # can be used to find the best anf worst movies
     for title, information in movies.items():
-        ratings.append(information["rating"])
+        rating = information["rating"]
+        ratings.append(rating)
 
-    average_rating = round(sum(ratings) / len(ratings), 2)
+    ratings_as_float =[]
+    # is needed to sum all the ratings
+    for rating in ratings:
+        split_rating = rating.split("/")
+        ratings_as_float.append(float(split_rating[0]))
+
+    average_rating = round(sum(ratings_as_float) / len(ratings_as_float), 2)
 
     median_rating = statistics.median(
-        ratings
+        ratings_as_float
     )  # needs module "statistics", is able to calculate the median
 
     best_rating = max(ratings)
-    best_movies = [
-        title for title, rating in movies.items() if rating["rating"] == best_rating
-    ]  # list comprehension
+    best_movies = []
+    for title, information in movies.items():
+        if information["rating"] == best_rating:
+            best_movies.append(title)
 
     worst_rating = min(ratings)
-    worst_movies = [
-        title for title, rating in movies.items() if rating["rating"] == worst_rating
-    ]  # list comprehension
+    worst_movies = []
+    for title, information in movies.items():
+        if information["rating"] == worst_rating:
+            worst_movies.append(title)
 
-    print(f"The average rating is: {average_rating}")
-    print(f"The median rating is: {median_rating}")
-    print(f"The movie with the best rating is: {best_movies}")
-    print(f"The movie with the worst rating is: {worst_movies}")
+    print(f"The average rating is: {average_rating}/10")
+    print(f"The median rating is: {median_rating}/10")
+    print(f"The movie with the best rating is: {best_movies}: {best_rating}")
+    print(f"The movie with the worst rating is: {worst_movies}: {worst_rating}")
 
 
 def show_all_movies_and_ratings():
@@ -126,7 +137,7 @@ def show_all_movies_and_ratings():
 
 
 def generate_website():
-    """Calls function to load the html template in website_generator.py"""
+    """Calls function to load the HTML template in website_generator.py"""
     movies = storage.list_movies()
     website_generator.load_html_template(movies)
 
@@ -156,8 +167,6 @@ def main():
         for menu_key, action in action_list.items():
             print(f"{menu_key} : {action[0]}")
 
-
-
         try:
             user_input = int(input(
                 "What do you wanna do? "
@@ -169,7 +178,6 @@ def main():
 
         except ValueError:
             print("Please enter a number (0-8).")
-
 
 
 if __name__ == "__main__":

@@ -61,18 +61,22 @@ def add_movie(title):
 
 def delete_movie(title):
     """Delete a movie from the database."""
+    movies = list_movies()
     with engine.connect() as connection:
-        try:
-            connection.execute(text("DELETE FROM movies WHERE title = :title"),{"title":title})
-            connection.commit()
-            print(f"Movie '{title}' deleted successfully.")
+        if title in movies:
+            try:
+                connection.execute(text("DELETE FROM movies WHERE title = :title"),{"title":title})
+                connection.commit()
+                print(f"Movie '{title}' deleted successfully.")
 
-        except Exception as e:
-            print(f"Error: {e}")
+            except Exception as e:
+                print(f"Error: {e}")
+        else:
+            print(f"Movie '{title}' is not in database.")
 
 
-def update_movie(title, rating):
-    """Update a movie's rating in the database."""
+"""def update_movie(title, rating):
+    #Update a movie's rating in the database. Function can be ignored now
     with engine.connect() as connection:
         try:
             connection.execute(text("UPDATE movies SET rating = :rating WHERE title = :title"),
@@ -82,3 +86,4 @@ def update_movie(title, rating):
 
         except Exception as e:
             print(f"Error: {e}")
+            """
