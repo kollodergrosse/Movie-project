@@ -1,4 +1,3 @@
-import math
 import random
 import statistics
 import sys
